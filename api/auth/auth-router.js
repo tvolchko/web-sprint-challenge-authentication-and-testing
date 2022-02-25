@@ -3,10 +3,10 @@ const jwt = require('jsonwebtoken');
 const { BCRYPT_ROUNDS, JWT_SECRET } = require('../../config')
 const router = require('express').Router()
 const Users = require('./auth-model')
-const { checkUsernameExists, validatateLogin } = require('../middleware/mids')
+const { checkUsernameExists, validatateRegister, validatateLogin } = require('../middleware/mids')
 
 
-router.post('/register', validatateLogin, (req, res, next) => {
+router.post('/register', validatateRegister, (req, res, next) => {
   // res.end('implement register, please!');
   /*
     IMPLEMENT
@@ -75,7 +75,7 @@ router.post('/login', validatateLogin, checkUsernameExists, (req, res, next) => 
   let { username, password } = req.body
 
   Users.findBy({ username })
-    .then(([user]) => {
+    .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = generateToken(user);
         res.status(200).json({

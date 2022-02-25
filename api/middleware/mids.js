@@ -11,7 +11,7 @@ const checkUsernameExists = async (req, res, next) => {
     }
 }
 
-const validatateLogin = async (req, res, next) => {
+const validatateRegister = async (req, res, next) => {
     const { username, password } = req.body
     if(!username || !password) {
         next({message: "username and password required", status: 401})
@@ -25,7 +25,17 @@ const validatateLogin = async (req, res, next) => {
     }
 }
 
+const validatateLogin = async (req, res, next) => {
+    const { username, password } = req.body
+    if(!username || !password) {
+        next({message: "username and password required", status: 401})
+    } else {
+            next()
+    }
+}
+
 module.exports = {
     checkUsernameExists,
-    validatateLogin
+    validatateLogin,
+    validatateRegister
 }
